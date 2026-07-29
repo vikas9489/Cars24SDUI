@@ -1,0 +1,356 @@
+{
+  "screenId": "home",
+  "version": 1,
+  "minSupportedVersion": 1,
+  "sections": [
+    {
+      "id": "header",
+      "type": "header_bar",
+      "props": {
+        "location": "Chandigarh",
+        "searchPlaceholder": "Search Ertiga",
+        "avatarInitial": "V"
+      },
+      "actions": {
+        "onLocationTap": { "type": "NAVIGATE", "route": "location_picker" },
+        "onSearchTap": { "type": "NAVIGATE", "route": "search" }
+      }
+    },
+    {
+      "id": "top_category_tabs",
+      "type": "chip_tab_row",
+      "props": {
+        "stateKey": "top_category",
+        "default": "all",
+        "style": "icon_pill",
+        "options": [
+          { "id": "all", "label": "All", "icon": "📱" },
+          { "id": "buy", "label": "Buy used cars", "icon": "🚗" },
+          { "id": "sell", "label": "Sell your car", "icon": "🏷️" },
+          { "id": "loans", "label": "Loans", "icon": "💰" },
+          { "id": "services", "label": "Chai point", "icon": "☕" }
+        ]
+      },
+      "actions": {
+        "onSelect": { "type": "SET_STATE", "key": "top_category", "value": "{{selectedId}}" }
+      }
+    },
+    {
+      "id": "buy_car_section",
+      "type": "banner_card_rail",
+      "props": {
+        "title": "Buy car",
+        "badgeText": "Upto ₹80,000 off",
+        "backgroundColor": "#5B4FE9",
+        "textColor": "#FFFFFF",
+        "items": [
+          {
+            "id": "all_used_cars",
+            "label": "All used cars",
+            "icon": "🚗",
+            "onTap": { "type": "NAVIGATE", "route": "listing", "params": { "filter": "all" } }
+          },
+          {
+            "id": "budget_used_cars",
+            "label": "Budget used cars",
+            "icon": "💵",
+            "onTap": { "type": "NAVIGATE", "route": "listing", "params": { "filter": "budget" } }
+          },
+          {
+            "id": "premium_used_cars",
+            "label": "Premium used cars",
+            "icon": "✨",
+            "onTap": { "type": "NAVIGATE", "route": "listing", "params": { "filter": "premium" } }
+          }
+        ]
+      }
+    },
+    {
+      "id": "sell_car_section",
+      "type": "banner_card_rail",
+      "props": {
+        "title": "Sell your car",
+        "backgroundColor": "#0E8F5B",
+        "textColor": "#FFFFFF",
+        "items": [
+          {
+            "id": "sell_your_car",
+            "label": "Sell your car",
+            "icon": "💸",
+            "onTap": { "type": "NAVIGATE", "route": "sell" }
+          },
+          {
+            "id": "check_valuation",
+            "label": "Check car valuation",
+            "icon": "📊",
+            "onTap": { "type": "NAVIGATE", "route": "valuation" }
+          },
+          {
+            "id": "scrap_car",
+            "label": "Scrap your car",
+            "icon": "♻️",
+            "onTap": { "type": "NAVIGATE", "route": "scrap" }
+          }
+        ]
+      }
+    },
+    {
+      "id": "loans_section",
+      "type": "section",
+      "props": { "title": "Get loans" },
+      "children": [
+        {
+          "id": "loans_grid",
+          "type": "icon_grid",
+          "props": {
+            "columns": 4,
+            "items": [
+              { "id": "used_car_loan", "label": "Used car loan", "icon": "🚗", "onTap": { "type": "NAVIGATE", "route": "loans/used_car" } },
+              { "id": "loan_against_car", "label": "Loan against car", "icon": "🔑", "onTap": { "type": "NAVIGATE", "route": "loans/against_car" } },
+              { "id": "personal_loan", "label": "Personal loan", "icon": "💵", "onTap": { "type": "NAVIGATE", "route": "loans/personal" } },
+              { "id": "credit_card", "label": "Credit card", "icon": "💳", "onTap": { "type": "NAVIGATE", "route": "loans/credit_card" } }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "quick_services_grid",
+      "type": "icon_grid",
+      "props": {
+        "columns": 3,
+        "cardBackgroundColor": "#F3EFFF",
+        "items": [
+          { "id": "new_car_pdi", "label": "New car PDI", "icon": "🔍", "onTap": { "type": "NAVIGATE", "route": "services/pdi" } },
+          { "id": "used_car_check", "label": "Used car check", "icon": "🩪", "onTap": { "type": "NAVIGATE", "route": "services/used_car_check" } },
+          { "id": "vehicle_history", "label": "Vehicle history", "icon": "📜", "onTap": { "type": "NAVIGATE", "route": "services/history" } },
+          { "id": "check_challan", "label": "Check challan", "icon": "📄", "onTap": { "type": "NAVIGATE", "route": "services/challan" } },
+          { "id": "check_insurance", "label": "Check car insurance", "icon": "🛡️", "onTap": { "type": "NAVIGATE", "route": "services/insurance" } },
+          { "id": "odometer_tampering", "label": "Odometer tampering", "icon": "⚙️", "onTap": { "type": "NAVIGATE", "route": "services/odometer" } }
+        ]
+      }
+    },
+    {
+      "id": "used_cars_section",
+      "type": "section",
+      "props": { "title": "Used cars you'll love", "viewAllRoute": "listing/used_cars" },
+      "children": [
+        {
+          "id": "used_cars_filter_tabs",
+          "type": "chip_tab_row",
+          "props": {
+            "stateKey": "used_cars_filter",
+            "default": "wishlisted",
+            "style": "text_pill",
+            "options": [
+              { "id": "wishlisted", "label": "Wishlisted" },
+              { "id": "hot_deals", "label": "Hot deals" }
+            ]
+          },
+          "actions": {
+            "onSelect": { "type": "SET_STATE", "key": "used_cars_filter", "value": "{{selectedId}}" }
+          }
+        },
+        {
+          "id": "used_cars_content",
+          "type": "conditional",
+          "props": { "stateKey": "used_cars_filter", "default": "wishlisted" },
+          "children": [
+            {
+              "id": "wishlisted_cars",
+              "type": "car_card_grid",
+              "props": {
+                "caseKey": "wishlisted",
+                "columns": 1,
+                "items": [
+                  {
+                    "id": "celerio_2015",
+                    "title": "2015 Maruti Celerio VXI AMT",
+                    "subtitle": "54,020 km • Petrol • Auto • White",
+                    "price": "₹2.14 lakh",
+                    "priceSubtext": "EMI ₹4,499/mo",
+                    "imageUrl": "https://picsum.photos/seed/celerio2015/400/300",
+                    "badges": ["Cars24 Assured", "5 day money back", "1 year warranty"],
+                    "onTap": { "type": "NAVIGATE", "route": "car_details", "params": { "carId": "celerio_2015" } }
+                  }
+                ]
+              }
+            },
+            {
+              "id": "hot_deals_cars",
+              "type": "car_card_grid",
+              "props": {
+                "caseKey": "hot_deals",
+                "columns": 1,
+                "items": [
+                  {
+                    "id": "swift_2019",
+                    "title": "2019 Maruti Swift VXI",
+                    "subtitle": "38,410 km • Petrol • Manual • Red",
+                    "price": "₹5.62 lakh",
+                    "priceSubtext": "EMI ₹11,200/mo",
+                    "imageUrl": "https://picsum.photos/seed/swift2019/400/300",
+                    "badges": ["Cars24 Assured", "Hot deal"],
+                    "onTap": { "type": "NAVIGATE", "route": "car_details", "params": { "carId": "swift_2019" } }
+                  }
+                ]
+              }
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "id": "manage_vehicle_section",
+      "type": "section",
+      "props": {
+        "title": "Manage your vehicle",
+        "trailingActionLabel": "+ Add vehicle",
+        "backgroundColor": "#5B4FE9",
+        "textColor": "#FFFFFF"
+      },
+      "actions": {
+        "onTrailingActionTap": { "type": "NAVIGATE", "route": "vehicle/add" }
+      },
+      "children": [
+        {
+          "id": "manage_vehicle_grid",
+          "type": "icon_grid",
+          "props": {
+            "columns": 3,
+            "backgroundColor": "#5B4FE9",
+            "textColor": "#FFFFFF",
+            "items": [
+              { "id": "pay_challan", "label": "Pay challan", "icon": "🧾", "onTap": { "type": "NAVIGATE", "route": "vehicle/challan" } },
+              { "id": "recharge_fastag", "label": "Recharge FASTag", "icon": "🆔", "onTap": { "type": "NAVIGATE", "route": "vehicle/fastag" } },
+              { "id": "get_insurance", "label": "Get insurance", "icon": "🛡️", "onTap": { "type": "NAVIGATE", "route": "vehicle/insurance" } },
+              { "id": "cash_against_car", "label": "Cash against car", "icon": "💰", "onTap": { "type": "NAVIGATE", "route": "vehicle/cash" } },
+              { "id": "roadside_assistance", "label": "Road side assistance", "icon": "🛠️", "onTap": { "type": "NAVIGATE", "route": "vehicle/rsa" } },
+              { "id": "get_warranty", "label": "Get warranty", "icon": "📝", "onTap": { "type": "NAVIGATE", "route": "vehicle/warranty" } }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "orbit_promo",
+      "type": "promo_banner",
+      "props": {
+        "title": "Add your car to Orbit",
+        "subtitle": "Enjoy 3-months Spotify Premium free",
+        "imageUrl": "https://picsum.photos/seed/orbitspotify/800/500",
+        "backgroundColor": "#0E1F14",
+        "textColor": "#FFFFFF",
+        "ctaLabel": "Add car now",
+        "onTap": { "type": "NAVIGATE", "route": "orbit" }
+      }
+    },
+    {
+      "id": "showroom_section",
+      "type": "section",
+      "props": { "title": "1 showroom in your city", "viewAllRoute": "showrooms" },
+      "children": [
+        {
+          "id": "bestech_showroom",
+          "type": "location_card",
+          "props": {
+            "imageUrl": "https://picsum.photos/seed/showroom1/800/500",
+            "name": "Bestech Square Mall",
+            "meta": "Sector 65, Chandigarh",
+            "distance": "5.7 km away",
+            "openStatus": "Opens at 11:00 AM",
+            "isOpen": false,
+            "primaryCta": { "label": "View showroom", "onTap": { "type": "NAVIGATE", "route": "showroom_details", "params": { "showroomId": "bestech_square_mall" } } },
+            "secondaryCta": { "label": "Call us now", "onTap": { "type": "OPEN_SHEET", "sheetId": "call_showroom", "params": { "showroomId": "bestech_square_mall" } } }
+          }
+        }
+      ]
+    },
+    {
+      "id": "trending_cars_section",
+      "type": "section",
+      "props": { "title": "Trending new cars", "viewAllRoute": "listing/new_cars" },
+      "children": [
+        {
+          "id": "trending_cars_rail",
+          "type": "car_card_rail",
+          "props": {
+            "items": [
+              {
+                "id": "seltos",
+                "title": "Seltos",
+                "subtitle": "Kia",
+                "imageUrl": "https://picsum.photos/seed/kiaseltos/400/300",
+                "onTap": { "type": "NAVIGATE", "route": "new_car_details", "params": { "modelId": "seltos" } }
+              },
+              {
+                "id": "sonet",
+                "title": "Sonet",
+                "subtitle": "Kia",
+                "imageUrl": "https://picsum.photos/seed/kiasonet/400/300",
+                "onTap": { "type": "NAVIGATE", "route": "new_car_details", "params": { "modelId": "sonet" } }
+              },
+              {
+                "id": "syros",
+                "title": "Syros",
+                "subtitle": "Kia",
+                "imageUrl": "https://picsum.photos/seed/kiasyros/400/300",
+                "onTap": { "type": "NAVIGATE", "route": "new_car_details", "params": { "modelId": "syros" } }
+              }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "match_finder_promo",
+      "type": "promo_banner",
+      "props": {
+        "title": "Let us find your match",
+        "subtitle": "Answer a few simple questions and get your perfect car match in 60 seconds",
+        "badgeText": "Recommended",
+        "imageUrl": "https://picsum.photos/seed/matchfinder/800/500",
+        "backgroundColor": "#F3EFFF",
+        "textColor": "#1A1A1A",
+        "ctaLabel": "Find my perfect match",
+        "onTap": { "type": "NAVIGATE", "route": "match_finder" }
+      }
+    },
+    {
+      "id": "return_policy_promo",
+      "type": "promo_banner",
+      "props": {
+        "title": "30 day return",
+        "subtitle": "We take it back as easily as we deliver it",
+        "imageUrl": "https://picsum.photos/seed/returnpolicy/800/500",
+        "backgroundColor": "#0E8F5B",
+        "textColor": "#FFFFFF",
+        "ctaLabel": "Know more",
+        "onTap": { "type": "NAVIGATE", "route": "return_policy" }
+      }
+    },
+    {
+      "id": "crashfree_promo",
+      "type": "promo_banner",
+      "props": {
+        "title": "CRASHFREE INDIA",
+        "subtitle": "Control. Judgment. Patience.",
+        "imageUrl": "https://picsum.photos/seed/crashfreeindia/800/600",
+        "backgroundColor": "#141414",
+        "textColor": "#FFFFFF",
+        "ctaLabel": "Explore now",
+        "onTap": { "type": "NAVIGATE", "route": "crashfree_campaign" }
+      }
+    },
+    {
+      "id": "footer",
+      "type": "footer",
+      "props": {
+        "title": "better drives,\nbetter lives",
+        "subtitle": "Made with ❤️ in Gurugram",
+        "backgroundColor": "#5B4FE9",
+        "textColor": "#FFFFFF"
+      }
+    }
+  ]
+}
