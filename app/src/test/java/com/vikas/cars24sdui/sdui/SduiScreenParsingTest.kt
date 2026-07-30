@@ -35,6 +35,9 @@ class SduiScreenParsingTest {
 
     private val knownActionTypes = setOf("SET_STATE", "NAVIGATE", "OPEN_SHEET", "TOAST")
 
+    /** "loyalty_points_widget" is deliberately never registered -- it's the unknown-component fallback demo, not a typo. */
+    private val intentionallyUnregisteredTypes = setOf("loyalty_points_widget")
+
     private fun loadHomeScreen(): SduiScreen {
         val file = File("src/main/assets/sdui/home_screen.json")
         assertTrue("expected asset at ${file.absolutePath}", file.exists())
@@ -87,10 +90,15 @@ class SduiScreenParsingTest {
     fun `every component type is one the registry is planned to support`() {
         val screen = loadHomeScreen()
         val used = allNodes(screen.sections).map { it.type }.toSet()
-        val unrecognized = used - knownComponentTypes
+        val unrecognized = used - knownComponentTypes - intentionallyUnregisteredTypes
         assertTrue(
-            "found component type(s) not in the planned registry (typo?): $unrecognized",
+            "found component type(s) not in the planned registry and not flagged as an " +
+                "intentional fallback demo (typo?): $unrecognized",
             unrecognized.isEmpty()
+        )
+        assertTrue(
+            "the unknown-component fallback demo node is missing from the payload",
+            intentionallyUnregisteredTypes.all { it in used }
         )
     }
 

@@ -114,20 +114,36 @@
         }
       ]
     },
+
+
     {
-      "id": "quick_services_grid",
-      "type": "icon_grid",
+      "id": "quick_services_section",
+      "type": "section",
+      "props": { "title": "Car check services" },
+      "children": [
+        {
+          "id": "quick_services_grid",
+          "type": "icon_grid",
+          "props": {
+            "columns": 3,
+            "cardBackgroundColor": "#F3EFFF",
+            "items": [
+              { "id": "new_car_pdi", "label": "New car PDI", "icon": "🔍", "onTap": { "type": "NAVIGATE", "route": "services/pdi" } },
+              { "id": "used_car_check", "label": "Used car check", "icon": "🩪", "onTap": { "type": "NAVIGATE", "route": "services/used_car_check" } },
+              { "id": "vehicle_history", "label": "Vehicle history", "icon": "📜", "onTap": { "type": "NAVIGATE", "route": "services/history" } },
+              { "id": "check_challan", "label": "Check challan", "icon": "📄", "onTap": { "type": "NAVIGATE", "route": "services/challan" } },
+              { "id": "check_insurance", "label": "Check car insurance", "icon": "🛡️", "onTap": { "type": "NAVIGATE", "route": "services/insurance" } },
+              { "id": "odometer_tampering", "label": "Odometer tampering", "icon": "⚙️", "onTap": { "type": "NAVIGATE", "route": "services/odometer" } }
+            ]
+          }
+        }
+      ]
+    },
+    {
+      "id": "loyalty_points_demo",
+      "type": "loyalty_points_widget",
       "props": {
-        "columns": 3,
-        "cardBackgroundColor": "#F3EFFF",
-        "items": [
-          { "id": "new_car_pdi", "label": "New car PDI", "icon": "🔍", "onTap": { "type": "NAVIGATE", "route": "services/pdi" } },
-          { "id": "used_car_check", "label": "Used car check", "icon": "🩪", "onTap": { "type": "NAVIGATE", "route": "services/used_car_check" } },
-          { "id": "vehicle_history", "label": "Vehicle history", "icon": "📜", "onTap": { "type": "NAVIGATE", "route": "services/history" } },
-          { "id": "check_challan", "label": "Check challan", "icon": "📄", "onTap": { "type": "NAVIGATE", "route": "services/challan" } },
-          { "id": "check_insurance", "label": "Check car insurance", "icon": "🛡️", "onTap": { "type": "NAVIGATE", "route": "services/insurance" } },
-          { "id": "odometer_tampering", "label": "Odometer tampering", "icon": "⚙️", "onTap": { "type": "NAVIGATE", "route": "services/odometer" } }
-        ]
+        "note": "Intentionally unregistered on the client to demonstrate the unknown-component fallback: a server rollout of a new section type degrades exactly like this instead of crashing."
       }
     },
     {
@@ -169,7 +185,7 @@
                     "subtitle": "54,020 km • Petrol • Auto • White",
                     "price": "₹2.14 lakh",
                     "priceSubtext": "EMI ₹4,499/mo",
-                    "imageUrl": "https://picsum.photos/seed/celerio2015/400/300",
+                    "imageUrl": "placeholder:car:64748B",
                     "badges": ["Cars24 Assured", "5 day money back", "1 year warranty"],
                     "onTap": { "type": "NAVIGATE", "route": "car_details", "params": { "carId": "celerio_2015" } }
                   }
@@ -189,7 +205,7 @@
                     "subtitle": "38,410 km • Petrol • Manual • Red",
                     "price": "₹5.62 lakh",
                     "priceSubtext": "EMI ₹11,200/mo",
-                    "imageUrl": "https://picsum.photos/seed/swift2019/400/300",
+                    "imageUrl": "placeholder:car:DC2626",
                     "badges": ["Cars24 Assured", "Hot deal"],
                     "onTap": { "type": "NAVIGATE", "route": "car_details", "params": { "carId": "swift_2019" } }
                   }
@@ -238,7 +254,7 @@
       "props": {
         "title": "Add your car to Orbit",
         "subtitle": "Enjoy 3-months Spotify Premium free",
-        "imageUrl": "https://picsum.photos/seed/orbitspotify/800/500",
+        "imageUrl": "placeholder:banner:16A34A",
         "backgroundColor": "#0E1F14",
         "textColor": "#FFFFFF",
         "ctaLabel": "Add car now",
@@ -254,7 +270,7 @@
           "id": "bestech_showroom",
           "type": "location_card",
           "props": {
-            "imageUrl": "https://picsum.photos/seed/showroom1/800/500",
+            "imageUrl": "placeholder:showroom:4B5563",
             "name": "Bestech Square Mall",
             "meta": "Sector 65, Chandigarh",
             "distance": "5.7 km away",
@@ -280,21 +296,21 @@
                 "id": "seltos",
                 "title": "Seltos",
                 "subtitle": "Kia",
-                "imageUrl": "https://picsum.photos/seed/kiaseltos/400/300",
+                "imageUrl": "placeholder:car:2563EB",
                 "onTap": { "type": "NAVIGATE", "route": "new_car_details", "params": { "modelId": "seltos" } }
               },
               {
                 "id": "sonet",
                 "title": "Sonet",
                 "subtitle": "Kia",
-                "imageUrl": "https://picsum.photos/seed/kiasonet/400/300",
+                "imageUrl": "placeholder:car:9CA3AF",
                 "onTap": { "type": "NAVIGATE", "route": "new_car_details", "params": { "modelId": "sonet" } }
               },
               {
                 "id": "syros",
                 "title": "Syros",
                 "subtitle": "Kia",
-                "imageUrl": "https://picsum.photos/seed/kiasyros/400/300",
+                "imageUrl": "placeholder:car:111827",
                 "onTap": { "type": "NAVIGATE", "route": "new_car_details", "params": { "modelId": "syros" } }
               }
             ]
@@ -309,7 +325,7 @@
         "title": "Let us find your match",
         "subtitle": "Answer a few simple questions and get your perfect car match in 60 seconds",
         "badgeText": "Recommended",
-        "imageUrl": "https://picsum.photos/seed/matchfinder/800/500",
+        "imageUrl": "placeholder:banner:7C3AED",
         "backgroundColor": "#F3EFFF",
         "textColor": "#1A1A1A",
         "ctaLabel": "Find my perfect match",
@@ -322,7 +338,7 @@
       "props": {
         "title": "30 day return",
         "subtitle": "We take it back as easily as we deliver it",
-        "imageUrl": "https://picsum.photos/seed/returnpolicy/800/500",
+        "imageUrl": "placeholder:banner:16A34A",
         "backgroundColor": "#0E8F5B",
         "textColor": "#FFFFFF",
         "ctaLabel": "Know more",
@@ -335,7 +351,7 @@
       "props": {
         "title": "CRASHFREE INDIA",
         "subtitle": "Control. Judgment. Patience.",
-        "imageUrl": "https://picsum.photos/seed/crashfreeindia/800/600",
+        "imageUrl": "placeholder:banner:111827",
         "backgroundColor": "#141414",
         "textColor": "#FFFFFF",
         "ctaLabel": "Explore now",
