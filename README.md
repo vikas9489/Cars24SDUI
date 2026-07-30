@@ -11,10 +11,11 @@ reference screenshot). It clears the complexity bar easily:
   and a footer.
 - Horizontal rail: "Trending new cars". Vertical grid: "Used cars you'll
   love".
-- Interactive SDUI action, twice over: the Wishlisted/Hot Deals chip
+- Interactive SDUI actions, three ways: the Wishlisted/Hot Deals chip
   toggle swaps the entire car list content via a `SET_STATE` + `conditional`
-  pair (not hardcoded), and every car card tap fires a `NAVIGATE` action
-  with params.
+  pair (not hardcoded), every car card tap fires a `NAVIGATE` action with
+  params, and "Call us now" on the showroom card fires `OPEN_SHEET` into a
+  real `ModalBottomSheet`.
 
 It was picked specifically because it's dense enough to stress-test
 generalization for the surprise-screen round, not because it was the
@@ -49,12 +50,12 @@ easiest thing to reproduce.
 ## 3. Architecture overview
 
 ```
-sdui/model/        SduiScreen, SduiNode, SduiAction — the generic wire model
-sdui/registry/      ComponentRegistry, ComponentRenderer, UnknownComponentFallback
-sdui/components/    one file per renderer (header_bar, chip_tab_row, ...)
-sdui/engine/        SduiViewModel (state map), ActionDispatcher, TemplateResolver, SduiScreenHost
-staticscreen/       hand-coded twin of the home screen, no SDUI (Part 2 baseline)
-coverage/           renders search_screen.json through the real engine (Part 3 proof)
+sdui/model/       SduiScreen, SduiNode, SduiAction — the generic wire model
+sdui/registry/     ComponentRegistry, ComponentRenderer, UnknownComponentFallback
+sdui/components/   one file per renderer (header_bar, chip_tab_row, ...)
+sdui/engine/       SduiViewModel (state map), ActionDispatcher, TemplateResolver, SduiScreenHost
+staticscreen/      hand-coded twin of the home screen, no SDUI (Part 2 baseline)
+coverage/          renders search_screen.json through the real engine (Part 3 proof)
 ```
 
 `SduiNode` is intentionally **not** a sealed class per component. It's:
