@@ -27,6 +27,10 @@ android {
                 getDefaultProguardFile("proguard-android-optimize.txt"),
                 "proguard-rules.pro"
             )
+            // Debug-signed release build so it's directly installable for
+            // local PERF.md benchmarking without a real release keystore.
+            // Not for distribution.
+            signingConfig = signingConfigs.getByName("debug")
         }
     }
     compileOptions {

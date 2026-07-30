@@ -1,5 +1,7 @@
 package com.vikas.cars24sdui.staticscreen
 
+import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.Canvas
 import androidx.compose.foundation.background
 import androidx.compose.foundation.border
@@ -20,6 +22,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -31,6 +34,7 @@ import androidx.compose.ui.draw.clip
 import androidx.compose.ui.geometry.Offset
 import androidx.compose.ui.graphics.Color
 import androidx.compose.ui.graphics.Path
+import androidx.compose.ui.platform.LocalContext
 import androidx.compose.ui.text.style.TextAlign
 import androidx.compose.ui.unit.dp
 import kotlinx.coroutines.launch
@@ -52,6 +56,13 @@ fun StaticHomeScreen(modifier: Modifier = Modifier) {
     val scope = rememberCoroutineScope()
     val navigate: (String) -> Unit = { route ->
         scope.launch { snackbarHostState.showSnackbar("Navigate → $route") }
+    }
+
+    // Same TTR/TTI marker as SduiScreenHost, for an apples-to-apples PERF.md comparison.
+    val context = LocalContext.current
+    LaunchedEffect(Unit) {
+        (context as? Activity)?.reportFullyDrawn()
+        Log.i("SduiPerf", "view_build_complete")
     }
 
     Scaffold(modifier = modifier, snackbarHost = { SnackbarHost(snackbarHostState) }) { padding ->

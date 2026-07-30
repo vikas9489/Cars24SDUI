@@ -1,5 +1,7 @@
 package com.vikas.cars24sdui.sdui.engine
 
+import android.app.Activity
+import android.util.Log
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.fillMaxSize
 import androidx.compose.foundation.layout.fillMaxWidth
@@ -14,6 +16,7 @@ import androidx.compose.material3.SnackbarHost
 import androidx.compose.material3.SnackbarHostState
 import androidx.compose.material3.Text
 import androidx.compose.runtime.Composable
+import androidx.compose.runtime.LaunchedEffect
 import androidx.compose.runtime.getValue
 import androidx.compose.runtime.mutableStateOf
 import androidx.compose.runtime.remember
@@ -56,6 +59,15 @@ fun SduiScreenHost(assetPath: String, modifier: Modifier = Modifier) {
             },
             onOpenSheet = { sheetId, params -> activeSheet = sheetId to params }
         )
+    }
+
+    // TTR/TTI marker for PERF.md: fires once the first composition (all
+    // above-the-fold content) has committed. reportFullyDrawn() is what
+    // `adb shell am start -W` and Logcat's "Fully drawn" line measure from
+    // process start.
+    LaunchedEffect(Unit) {
+        (context as? Activity)?.reportFullyDrawn()
+        Log.i("SduiPerf", "view_build_complete")
     }
 
     Scaffold(
