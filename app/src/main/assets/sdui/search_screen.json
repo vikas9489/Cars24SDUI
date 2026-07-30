@@ -1,0 +1,108 @@
+{
+  "screenId": "search",
+  "version": 1,
+  "minSupportedVersion": 1,
+  "sections": [
+    {
+      "id": "search_header",
+      "type": "search_header_bar",
+      "props": { "searchPlaceholder": "Search" },
+      "actions": {
+        "onBackTap": { "type": "NAVIGATE", "route": "home" },
+        "onSearchTap": { "type": "NAVIGATE", "route": "search" }
+      }
+    },
+    {
+      "id": "trending_section",
+      "type": "section",
+      "props": { "title": "Trending now" },
+      "children": [
+        {
+          "id": "trending_chips",
+          "type": "chip_tab_row",
+          "props": {
+            "stateKey": "trending_pick",
+            "default": "",
+            "style": "text_pill",
+            "options": [
+              { "id": "honda_amaze", "label": "Honda Amaze ↗" },
+              { "id": "honda_city", "label": "Honda City ↗" },
+              { "id": "tata_nexon", "label": "Tata NEXON ↗" }
+            ]
+          },
+          "actions": {
+            "onSelect": { "type": "NAVIGATE", "route": "search_results", "params": { "query": "{{selectedId}}" } }
+          }
+        }
+      ]
+    },
+    {
+      "id": "brands_section",
+      "type": "section",
+      "props": { "title": "Popular brands" },
+      "children": [
+        {
+          "id": "brand_chips",
+          "type": "chip_tab_row",
+          "props": {
+            "stateKey": "brand_pick",
+            "default": "",
+            "style": "icon_inline_pill",
+            "options": [
+              { "id": "maruti", "label": "Maruti", "icon": "🚙" },
+              { "id": "hyundai", "label": "Hyundai", "icon": "🚗" },
+              { "id": "tata", "label": "Tata", "icon": "🚕" },
+              { "id": "honda", "label": "Honda", "icon": "🚘" }
+            ]
+          },
+          "actions": {
+            "onSelect": { "type": "NAVIGATE", "route": "search_results", "params": { "brand": "{{selectedId}}" } }
+          }
+        }
+      ]
+    },
+    {
+      "id": "price_range_section",
+      "type": "section",
+      "props": { "title": "Price range" },
+      "children": [
+        {
+          "id": "price_range_chips",
+          "type": "chip_tab_row",
+          "props": {
+            "stateKey": "price_range_pick",
+            "default": "",
+            "style": "text_pill",
+            "options": [
+              { "id": "under_2l", "label": "Cars Under 2 lakhs" },
+              { "id": "under_3l", "label": "Cars Under 3 lakhs" },
+              { "id": "under_4l", "label": "Cars Under 4 lakhs" }
+            ]
+          },
+          "actions": {
+            "onSelect": { "type": "NAVIGATE", "route": "search_results", "params": { "maxPrice": "{{selectedId}}" } }
+          }
+        }
+      ]
+    },
+    {
+      "id": "curated_picks_section",
+      "type": "section",
+      "props": { "title": "Curated Picks for you" },
+      "children": [
+        {
+          "id": "curated_picks_rail",
+          "type": "icon_rail",
+          "props": {
+            "items": [
+              { "id": "suv_cars", "label": "SUV Cars", "icon": "🚙", "onTap": { "type": "NAVIGATE", "route": "listing", "params": { "tag": "suv" } } },
+              { "id": "steal_deals", "label": "Steal Deals", "icon": "🏷️", "onTap": { "type": "NAVIGATE", "route": "listing", "params": { "tag": "steal_deals" } } },
+              { "id": "budget_friendly", "label": "Budget Friendly", "icon": "💰", "onTap": { "type": "NAVIGATE", "route": "listing", "params": { "tag": "budget" } } },
+              { "id": "high_safety", "label": "High Safety", "icon": "🛡️", "onTap": { "type": "NAVIGATE", "route": "listing", "params": { "tag": "safety" } } }
+            ]
+          }
+        }
+      ]
+    }
+  ]
+}

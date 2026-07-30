@@ -29,6 +29,11 @@
             android:exported="true"
             android:label="Cars24SDUI (Static)"
             android:theme="@style/Theme.Cars24SDUI" />
+        <activity
+            android:name=".coverage.SearchScreenPreviewActivity"
+            android:exported="true"
+            android:label="Cars24SDUI (Search coverage test)"
+            android:theme="@style/Theme.Cars24SDUI" />
     </application>
 
 </manifest>

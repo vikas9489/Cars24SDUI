@@ -7,8 +7,10 @@ import com.vikas.cars24sdui.sdui.components.ChipTabRowRenderer
 import com.vikas.cars24sdui.sdui.components.FooterRenderer
 import com.vikas.cars24sdui.sdui.components.HeaderBarRenderer
 import com.vikas.cars24sdui.sdui.components.IconGridRenderer
+import com.vikas.cars24sdui.sdui.components.IconRailRenderer
 import com.vikas.cars24sdui.sdui.components.LocationCardRenderer
 import com.vikas.cars24sdui.sdui.components.PromoBannerRenderer
+import com.vikas.cars24sdui.sdui.components.SearchHeaderBarRenderer
 import com.vikas.cars24sdui.sdui.components.SectionRenderer
 import com.vikas.cars24sdui.sdui.registry.ComponentRegistry
 
@@ -30,5 +32,7 @@ object SduiRegistryInstaller {
         ComponentRegistry.register("promo_banner", PromoBannerRenderer)
         ComponentRegistry.register("location_card", LocationCardRenderer)
         ComponentRegistry.register("footer", FooterRenderer)
+        ComponentRegistry.register("search_header_bar", SearchHeaderBarRenderer)
+        ComponentRegistry.register("icon_rail", IconRailRenderer)
     }
 }

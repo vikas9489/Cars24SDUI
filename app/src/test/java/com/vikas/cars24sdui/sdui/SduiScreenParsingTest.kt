@@ -26,11 +26,12 @@ class SduiScreenParsingTest {
 
     private val json = Json { ignoreUnknownKeys = true }
 
-    /** Every component type the registry is planned to support (task #5). */
+    /** Every component type the registry supports (see SduiRegistryInstaller). */
     private val knownComponentTypes = setOf(
         "header_bar", "chip_tab_row", "banner_card_rail", "icon_grid",
         "section", "car_card_rail", "car_card_grid", "promo_banner",
-        "location_card", "conditional", "footer"
+        "location_card", "conditional", "footer",
+        "search_header_bar", "icon_rail"
     )
 
     private val knownActionTypes = setOf("SET_STATE", "NAVIGATE", "OPEN_SHEET", "TOAST")
@@ -38,11 +39,13 @@ class SduiScreenParsingTest {
     /** "loyalty_points_widget" is deliberately never registered -- it's the unknown-component fallback demo, not a typo. */
     private val intentionallyUnregisteredTypes = setOf("loyalty_points_widget")
 
-    private fun loadHomeScreen(): SduiScreen {
-        val file = File("src/main/assets/sdui/home_screen.json")
+    private fun loadScreen(assetPath: String): SduiScreen {
+        val file = File("src/main/assets/$assetPath")
         assertTrue("expected asset at ${file.absolutePath}", file.exists())
         return json.decodeFromString(SduiScreen.serializer(), file.readText())
     }
+
+    private fun loadHomeScreen(): SduiScreen = loadScreen("sdui/home_screen.json")
 
     private fun allNodes(nodes: List<SduiNode>): List<SduiNode> =
         nodes + nodes.flatMap { allNodes(it.children) }
@@ -164,5 +167,31 @@ class SduiScreenParsingTest {
         assertTrue("expected the trending Kia line-up from the screenshot", "Seltos" in raw)
         assertTrue("expected the showroom name from the screenshot", "Bestech Square Mall" in raw)
         assertTrue("expected the footer tagline from the screenshot", "Gurugram" in raw)
+    }
+
+    // --- search_screen.json: the COVERAGE.md dry-run against a screen this project wasn't built for ---
+
+    @Test
+    fun `search screen json decodes and uses only known component and action types`() {
+        val screen = loadScreen("sdui/search_screen.json")
+        val nodes = allNodes(screen.sections)
+
+        val usedTypes = nodes.map { it.type }.toSet()
+        val unrecognizedTypes = usedTypes - knownComponentTypes
+        assertTrue("unrecognized component type(s) in search_screen.json: $unrecognizedTypes", unrecognizedTypes.isEmpty())
+
+        val actionTypes = mutableListOf<String>()
+        nodes.forEach { findActionTypes(it.props, actionTypes) }
+        actionTypes += nodes.flatMap { it.actions.values }.map { it.type }
+        val unrecognizedActions = actionTypes.toSet() - knownActionTypes
+        assertTrue("unrecognized action type(s) in search_screen.json: $unrecognizedActions", unrecognizedActions.isEmpty())
+    }
+
+    @Test
+    fun `search screen reuses chip_tab_row for three of its five sections`() {
+        val screen = loadScreen("sdui/search_screen.json")
+        val nodes = allNodes(screen.sections)
+        val chipRowCount = nodes.count { it.type == "chip_tab_row" }
+        assertEquals("Trending now, Popular brands, and Price range should each be a chip_tab_row", 3, chipRowCount)
     }
 }

@@ -1,15 +1,18 @@
 package com.vikas.cars24sdui.sdui.components
 
 import androidx.compose.foundation.background
+import androidx.compose.foundation.border
 import androidx.compose.foundation.clickable
 import androidx.compose.foundation.layout.Arrangement
 import androidx.compose.foundation.layout.Box
 import androidx.compose.foundation.layout.Column
 import androidx.compose.foundation.layout.PaddingValues
+import androidx.compose.foundation.layout.Row
 import androidx.compose.foundation.layout.Spacer
 import androidx.compose.foundation.layout.height
 import androidx.compose.foundation.layout.padding
 import androidx.compose.foundation.layout.size
+import androidx.compose.foundation.layout.width
 import androidx.compose.foundation.lazy.LazyRow
 import androidx.compose.foundation.lazy.items
 import androidx.compose.foundation.shape.CircleShape
@@ -80,7 +83,27 @@ object ChipTabRowRenderer : ComponentRenderer {
                         Spacer(Modifier.height(4.dp))
                         Text(option.label, style = MaterialTheme.typography.labelSmall)
                     }
+                } else if (props.style == "icon_inline_pill") {
+                    Row(
+                        verticalAlignment = Alignment.CenterVertically,
+                        modifier = Modifier
+                            .clip(RoundedCornerShape(20.dp))
+                            .background(if (isSelected) MaterialTheme.colorScheme.primary else Color(0xFFF0F0F5))
+                            .border(1.dp, Color(0xFFE5E5EA), RoundedCornerShape(20.dp))
+                            .clickable(onClick = onClick)
+                            .padding(horizontal = 16.dp, vertical = 8.dp)
+                    ) {
+                        Text(option.icon ?: "•")
+                        Spacer(Modifier.width(6.dp))
+                        Text(
+                            option.label,
+                            color = if (isSelected) Color.White else Color(0xFF1A1A1A),
+                            style = MaterialTheme.typography.labelLarge
+                        )
+                    }
                 } else {
+                    // "text_pill" and any unrecognized style value fall back here --
+                    // an unknown style degrades to the plain pill, not a crash.
                     Text(
                         option.label,
                         color = if (isSelected) Color.White else Color(0xFF1A1A1A),
