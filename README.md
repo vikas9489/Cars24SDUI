@@ -1,8 +1,5 @@
 # Cars24 SDUI Assignment
 
-> Status: in progress. This README is being filled in incrementally as the
-> system is built — see git history for the actual build order.
-
 ## 1. Screen chosen
 
 The Cars24 **home/landing page** (Chandigarh location shown in the
@@ -25,16 +22,39 @@ easiest thing to reproduce.
 
 ## 2. Setup
 
-TODO: how to open/build/run (Android Studio version, JDK, minSdk/target).
+- **Requirements:** Android Studio with AGP 9.1.0 / Kotlin 2.0.21 support,
+  Android SDK with `compileSdk`/`targetSdk` 37 installed, `minSdk` 24. Any
+  JDK 21 works (the JBR bundled with Android Studio is fine).
+- **Open & run:** clone, open in Android Studio, let Gradle sync, run the
+  `app` config on a device/emulator — this launches `MainActivity` (the
+  real SDUI-driven home screen, rendered from `assets/sdui/home_screen.json`).
+- **Static twin** (Part 2's perf baseline, no SDUI at all):
+  ```
+  adb shell am start -n com.vikas.cars24sdui/.staticscreen.StaticMainActivity
+  ```
+- **Coverage dry-run** (a second, unseen-by-this-project Cars24 screen
+  rendered through the same engine — see COVERAGE.md):
+  ```
+  adb shell am start -n com.vikas.cars24sdui/.coverage.SearchScreenPreviewActivity
+  ```
+- **Unit tests:** `./gradlew testDebugUnitTest` — schema/parser
+  consistency checks, `ActionDispatcher`, `TemplateResolver`.
+- **Release build for benchmarking** (debug-signed for local install,
+  not a distributable release — see PERF.md):
+  ```
+  ./gradlew assembleRelease
+  adb install -r app/build/outputs/apk/release/app-release.apk
+  ```
 
 ## 3. Architecture overview
 
 ```
-sdui/model/       SduiScreen, SduiNode, SduiAction — the generic wire model
-sdui/registry/     ComponentRegistry (type string -> @Composable renderer)     [next]
-sdui/components/   one file per renderer (header_bar, chip_tab_row, ...)       [next]
-sdui/engine/       SduiViewModel (state map), ActionDispatcher, SduiScreen()   [next]
-static/            hand-coded twin of the home screen, no SDUI                [next]
+sdui/model/        SduiScreen, SduiNode, SduiAction — the generic wire model
+sdui/registry/      ComponentRegistry, ComponentRenderer, UnknownComponentFallback
+sdui/components/    one file per renderer (header_bar, chip_tab_row, ...)
+sdui/engine/        SduiViewModel (state map), ActionDispatcher, TemplateResolver, SduiScreenHost
+staticscreen/       hand-coded twin of the home screen, no SDUI (Part 2 baseline)
+coverage/           renders search_screen.json through the real engine (Part 3 proof)
 ```
 
 `SduiNode` is intentionally **not** a sealed class per component. It's:
@@ -106,7 +126,38 @@ Trade-offs below.
 
 ## 6. Trade-offs / what was cut
 
-TODO: honest list of what was scoped out given the 72h timebox, and why.
+- **No real navigation graph.** `NAVIGATE` actions surface as a Snackbar
+  ("Navigate → route params") rather than pushing a real destination
+  screen, except for the one case worth building for real: the coverage
+  dry-run's search screen, reachable as its own preview Activity. Building
+  a full multi-screen nav graph wasn't the point of the assignment — the
+  action *firing correctly with the right route/params* is what's being
+  tested, and that's real and verified.
+- **No R8/minification on the benchmarked release build.** Left off
+  specifically to avoid destabilizing PERF.md's numbers this late in the
+  timeline; noted in PERF.md as an unmeasured further optimization.
+- **Perf measured manually (5 cold-start runs + `dumpsys gfxinfo`), not
+  with Macrobenchmark.** Macrobenchmark's `BenchmarkRule`/`JankStats`
+  would give statistically stronger percentile data across many more
+  iterations; the manual approach is honest about being a smaller sample.
+- **Unknown *component type* degrades loudly (visible fallback box);
+  unknown *style value inside a known component* currently degrades
+  silently** (found during the coverage dry-run — an unrecognized
+  `chip_tab_row` style value falls through to the default look rather
+  than a visible marker). Both are safe, but only one is easy to spot in
+  a real rollout. Left as-is rather than adding a second fallback
+  mechanism for every prop-level enum in the schema.
+- **Single platform (Android/Compose).** The assignment explicitly frames
+  a second platform as bonus, not baseline, and rewards depth over
+  breadth on one stack — that's where the time went.
+- **No automated visual regression testing.** Every renderer and bug fix
+  was verified on a real physical device by hand (see AI_WORKFLOW.md —
+  this is also what caught the two real bugs that unit tests missed), but
+  there's no screenshot-diff CI step.
+- **Versioning is a check + fallback, not a staged rollout.** The client
+  correctly refuses to render a payload it can't understand and degrades
+  gracefully on new/unknown types, but there's no percentage-based
+  server-side version gating — out of scope for a client-side assignment.
 
 ## Related docs
 
