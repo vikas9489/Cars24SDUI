@@ -30,10 +30,20 @@ import com.vikas.cars24sdui.sdui.model.SDUI_SCHEMA_VERSION
 import kotlinx.coroutines.launch
 import kotlinx.serialization.json.JsonObject
 
-/** Root entry point: loads a screen's JSON from assets and renders it end to end. */
+/**
+ * Root entry point: loads a screen's JSON from assets and renders it end to
+ * end. `onNavigateRoute` lets a caller intercept specific routes with a real
+ * destination (return true to consume); anything not handled falls through
+ * to a Snackbar showing the route/params, which is enough to prove the
+ * action fired correctly without a full navigation graph.
+ */
 @OptIn(ExperimentalMaterial3Api::class)
 @Composable
-fun SduiScreenHost(assetPath: String, modifier: Modifier = Modifier) {
+fun SduiScreenHost(
+    assetPath: String,
+    modifier: Modifier = Modifier,
+    onNavigateRoute: (route: String, params: JsonObject?) -> Boolean = { _, _ -> false }
+) {
     val context = LocalContext.current
     val screen = remember(assetPath) { SduiAssetLoader.loadScreen(context, assetPath) }
 
@@ -53,8 +63,10 @@ fun SduiScreenHost(assetPath: String, modifier: Modifier = Modifier) {
         ActionDispatcher(
             state = viewModel.state,
             onNavigate = { route, params ->
-                scope.launch {
-                    snackbarHostState.showSnackbar("Navigate → $route ${params?.toString().orEmpty()}")
+                if (!onNavigateRoute(route, params)) {
+                    scope.launch {
+                        snackbarHostState.showSnackbar("Navigate → $route ${params?.toString().orEmpty()}")
+                    }
                 }
             },
             onOpenSheet = { sheetId, params -> activeSheet = sheetId to params }
