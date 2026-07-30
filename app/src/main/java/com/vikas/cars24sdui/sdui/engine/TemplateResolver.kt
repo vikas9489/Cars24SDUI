@@ -4,8 +4,11 @@ import kotlinx.serialization.json.JsonElement
 import kotlinx.serialization.json.JsonNull
 import kotlinx.serialization.json.JsonPrimitive
 
-private val STATE_TEMPLATE = Regex("""^\{\{\s*state\.([a-zA-Z0-9_]+)\s*}}$""")
-private val EVENT_TEMPLATE = Regex("""^\{\{\s*([a-zA-Z0-9_]+)\s*}}$""")
+// Closing }} must be escaped: Android's on-device ICU regex engine rejects a
+// bare "}" as a syntax error even though desktop JVM regex (and unit tests
+// running on the host JVM) accept it unescaped -- caught only at real runtime.
+private val STATE_TEMPLATE = Regex("""^\{\{\s*state\.([a-zA-Z0-9_]+)\s*\}\}$""")
+private val EVENT_TEMPLATE = Regex("""^\{\{\s*([a-zA-Z0-9_]+)\s*\}\}$""")
 
 /**
  * Resolves an SduiAction's `value`/param fields against page state
