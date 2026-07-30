@@ -129,11 +129,14 @@ Trade-offs below.
 
 - **No real navigation graph.** `NAVIGATE` actions surface as a Snackbar
   ("Navigate → route params") rather than pushing a real destination
-  screen, except for the one case worth building for real: the coverage
-  dry-run's search screen, reachable as its own preview Activity. Building
-  a full multi-screen nav graph wasn't the point of the assignment — the
+  screen, except for one case wired for real: the home screen's search
+  tap (`route: "search"`) launches `SearchScreenPreviewActivity` — the
+  same screen used for the COVERAGE.md dry-run — via an
+  `onNavigateRoute` interception hook on `SduiScreenHost`. Building a
+  full multi-screen nav graph wasn't the point of the assignment — the
   action *firing correctly with the right route/params* is what's being
-  tested, and that's real and verified.
+  tested, and one real end-to-end hop plus that verification is enough
+  to prove the mechanism.
 - **No R8/minification on the benchmarked release build.** Left off
   specifically to avoid destabilizing PERF.md's numbers this late in the
   timeline; noted in PERF.md as an unmeasured further optimization.
