@@ -83,6 +83,15 @@ per screen, owned by `SduiViewModel`. Components bind to it via
 state key changes. No custom expression language — just template
 substitution and one switch-node type.
 
+`SduiViewModel` is a real `androidx.lifecycle.ViewModel` (obtained via the
+standard `viewModel()` composable in `SduiScreenHost`), not a plain
+`remember { mutableStateOf(...) }` — so the Wishlisted/Hot Deals selection
+and any other SDUI-driven state survive a configuration change (e.g.
+rotation) instead of resetting. `StaticHomeScreen` deliberately doesn't use
+one: its two bits of local UI state have no complex data flow behind them,
+so a ViewModel would be ceremony without benefit there — a real difference
+between the two implementations, not an oversight.
+
 ## 4. Schema design rationale
 
 The schema optimizes for **forward compatibility over expressiveness**:
